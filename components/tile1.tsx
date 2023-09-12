@@ -1,40 +1,67 @@
 "use client"
 
+import { GraphContext } from "@/providers/graphProvider";
 import { Chart } from "chart.js/auto"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 
 export default function Tile1() {
 
+  const { data } = useContext(GraphContext) as any;
+
   useEffect(() => {
-    // init the chart
+
     let ctx = document.getElementById("myChart") as HTMLCanvasElement
 
-    new Chart(ctx, {
-      type: 'line',
+    let completedTasks = 0;
+    let pendingTasks = 0;
+
+    for (let key in data) {
+      if (data[key]) {
+        completedTasks++;
+      } else {
+        pendingTasks++;
+      }
+    }
+
+    let chart = new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Done", "Remaining"],
         datasets: [
           {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: "orangeRed",
-            borderColor: "orangeRed"
+            data: [completedTasks, pendingTasks],
+            backgroundColor: ["limeGreen", "cyan"],
+            borderColor: ["limeGreen", "cyan"],
           },
-          {
-            label: '# of Other things',
-            data: [18, 19, 8, 5, 10, 3],
-            backgroundColor: "cyan",
-            borderColor: "cyan"
-          }
         ]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              precision: 0
+            }
+          }
+        }
       }
     });
-  });
+
+    return () => {
+      chart.destroy()
+    }
+  }, [data]);
 
   return <div className="border-[1px] border-slate-700 rounded text-white py-5 px-5">
     <div className="flex flex-row justify-between">
-      <span className="text-l font-light">
-        Some Graph 1
+      <span className="text-l font-light underline underline-offset-4 decoration-slate-700">
+        Graph
       </span>
       <div>...</div>
     </div>
