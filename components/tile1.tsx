@@ -16,7 +16,7 @@ export default function Tile1() {
     let pendingTasks = 0;
 
     for (let key in data) {
-      if (data[key]) {
+      if (data[key].completed) {
         completedTasks++;
       } else {
         pendingTasks++;
