@@ -4,7 +4,7 @@ import "./auth.style.css";
 export default function AuthPage() {
 
   return (
-    <div className='flex h-screen background'>
+    <div className='flex h-screen relative background overflow-hidden'>
       <AuthForm />
     </div>
   )
