@@ -4,7 +4,7 @@ import { GraphContext } from "@/providers/graphProvider";
 import { Chart } from "chart.js/auto"
 import { useContext, useEffect } from "react"
 
-export default function Tile1() {
+export default function TodoListGraph() {
 
   const { data } = useContext(GraphContext) as any;
 
