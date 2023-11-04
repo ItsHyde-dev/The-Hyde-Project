@@ -1,20 +1,7 @@
-"use client";
-
-import { useRef } from "react"
 import { Menu } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 export default function WidgetWrapper({ children, title }: any) {
-
-  const openWidgetActions = () => {
-    if (openWidgetActionsRef.current?.classList.contains("hidden"))
-      openWidgetActionsRef.current?.classList.remove("hidden")
-    else
-      openWidgetActionsRef.current?.classList.add("hidden")
-  }
-
-  const openWidgetActionsRef = useRef<HTMLDivElement>(null)
-
   return (
     <div className="border-[1px] border-slate-700 rounded text-white py-5 px-5 flex flex-col h-full overflow-hidden">
       <div className="flex flex-row justify-between">
