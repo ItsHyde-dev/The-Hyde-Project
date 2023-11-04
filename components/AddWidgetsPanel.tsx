@@ -17,15 +17,24 @@ export function AddWidgetsPanel(isOpen: any, setIsOpen: any) {
   const modalContent = () => {
     return <div className="grid grid-cols-3 gap-x-4 w-fit mt-5 align-center items-center">
       <div>Select Type:</div>
-      <select className="bg-transparent" onChange={(e) => { selectedWidget = e.target.value }}>
+      <select className="bg-transparent outline-none" onChange={(e) => { selectedWidget = e.target.value }}>
         {
           data.map((type: any) => {
             return <option key={type.id} value={type.id}>{type.name}</option>;
           })
         }
       </select>
-      <button onClick={addWidget} className="bg-blue-500 hover:bg-blue-700 text-white py-2 ml-5 rounded-full">+ Add</button>
-    </div>
+      <div className="flex">
+        <button
+          onClick={addWidget}
+          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-5 ml-5 rounded-full"
+        >
+          <span className="w-auto">
+            + Add
+          </span>
+        </button>
+      </div>
+    </div >
   }
 
   const addWidget = async () => {

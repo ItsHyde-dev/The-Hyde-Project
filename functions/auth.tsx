@@ -1,5 +1,4 @@
 import API_CONSTANTS from "@/constants/api"
-import { toast } from "react-toastify"
 import { handleStatusCodes } from "./api";
 
 async function authenticate({ email, password }: { email: string, password: string }) {

@@ -6,7 +6,6 @@ export default function ApiResponseHandlerWidget(isLoading: boolean, isError: an
   }
 
   if (isLoading) {
-    console.log("isLoading")
     return <div>Loading...</div>;
   }
 

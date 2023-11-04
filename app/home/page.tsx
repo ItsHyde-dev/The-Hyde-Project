@@ -6,37 +6,41 @@ import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 
 import "./homepage.styles.css";
-import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
+  const { replace } = useRouter()
+  const [authState, setAuthState] = useState(false);
+
   useEffect(() => {
-    document.title = "Home"
+    if (!localStorage.getItem("token")) {
+      replace("/auth")
+    } else {
+      setAuthState(true)
+      document.title = "Home"
+    }
   }, []);
 
+  if (!authState)
+    return <p>Loading ....</p>;
+
   return <div className="flex flex-col text-white homeBackground">
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    <NavBar currentFocus="Home"/>
-
+    <ToastContainer
+      position="bottom-left"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
+    <NavBar currentFocus="Home" />
     <HomepageWidgets />
-
-    <Head>
-      <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
   </div>;
 }
 

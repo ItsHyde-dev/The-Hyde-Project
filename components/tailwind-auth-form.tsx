@@ -1,14 +1,16 @@
 "use client"
 
-import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import logo from '../public/Hyde Project Logo.png'
 import { authenticate } from "@/functions/auth";
 
 export default function AuthForm() {
 
-  const { replace } = useRouter();
+  useEffect(() => {
+    document.title = "Login"
+  }, [])
 
-  const handleSignin = async (event: any) => {
+  const handleSignin = (event: any) => {
     event.preventDefault();
 
     let loginData = {
@@ -16,13 +18,9 @@ export default function AuthForm() {
       password: event.target.password.value
     }
 
-    // if (!await authenticate(loginData))
-    // return;
-
     authenticate(loginData).then((res) => {
       if (!res) return;
-      // console.log("Should route to home")
-      replace("/home");
+      window.location.href = "/home";
     })
 
   }

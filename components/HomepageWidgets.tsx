@@ -15,7 +15,6 @@ export default function HomepageWidgets() {
     retry: false,
   });
 
-  let [isOpen, setIsOpen] = useState(false);
   let memoizedWidgetTree = useMemo(() => {
     return ApiResponseHandlerWidget(isLoading, isError,
       () => {
@@ -23,6 +22,7 @@ export default function HomepageWidgets() {
       }
     )
   }, [data])
+  let [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="flex flex-col p-10">

@@ -4,6 +4,7 @@ import api_constants from '../constants/api'
 import { authorizedApiCall } from './api';
 
 export async function getUserWidgets() {
+  setTimeout(() => { }, 2000);
   const response = await authorizedApiCall(api_constants.API_BASE_URL + "/widgets/getWidgets", "GET", {}, {});
   return response.data.widgetGroups;
 }

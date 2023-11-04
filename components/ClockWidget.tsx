@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
 import WidgetWrapper from "./WidgetWrapper";
-import { Signal } from "@preact/signals-react";
 
 export default function ClockWidget() {
   const [time, setTime] = useState("");
