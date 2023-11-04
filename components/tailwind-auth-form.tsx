@@ -8,7 +8,7 @@ export default function AuthForm() {
 
   const { replace } = useRouter();
 
-  const handleSignin = (event: any) => {
+  const handleSignin = async (event: any) => {
     event.preventDefault();
 
     let loginData = {
@@ -16,12 +16,15 @@ export default function AuthForm() {
       password: event.target.password.value
     }
 
-    if (!authenticate(loginData)) {
-      alert("Invalid Credentials");
-      return;
-    };
+    // if (!await authenticate(loginData))
+    // return;
 
-    replace("/home");
+    authenticate(loginData).then((res) => {
+      if (!res) return;
+      // console.log("Should route to home")
+      replace("/home");
+    })
+
   }
 
   return (

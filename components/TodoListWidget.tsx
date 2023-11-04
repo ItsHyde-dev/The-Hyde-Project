@@ -1,37 +1,39 @@
-"use client"
-
 import GenerateTodoList from "@/functions/generateTodoList"
-import { GraphContext } from "@/providers/graphProvider"
 import { Disclosure } from "@headlessui/react"
 import { ChevronDownIcon, TrashIcon } from "@heroicons/react/24/outline"
-import { useContext, useEffect, useRef, FocusEvent } from "react"
+import { useEffect, useRef, FocusEvent, ReactNode } from "react"
 import WidgetWrapper from "./WidgetWrapper"
 import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
+import { Signal } from "@preact/signals-react"
 
-let functions: TodoListFunctions;
-
-export default function TodoListWidget() {
-
-  const { data, setData } = useContext(GraphContext) as any
-  functions = new TodoListFunctions(data, setData)
+export default function TodoListWidget({ stateSignal }: { stateSignal: Signal<any> }): ReactNode {
 
   useEffect(() => {
     GenerateTodoList().then((res: any) => {
-      setData(res);
+      stateSignal.value = res
     })
   }, [])
+
+  const functions = new TodoListFunctions(stateSignal)
 
   return (
     <WidgetWrapper title="Todo List">
       <GhostInput placeholder="+ Add a new task" action={functions.addTask} />
-      <div>
+      <div className="overflow-scroll">
         {
-          data && Object.keys(data).length > 0 ?
-            functions.getRootTasks(data)
+          stateSignal.value && Object.keys(stateSignal.value).length > 0 ?
+            functions.getRootTasks(stateSignal.value)
               .map(
                 (taskId: string) =>
-                  <TodoItem key={taskId} taskName={data[taskId].name} id={taskId} children={data[taskId].children} />
+                  <TodoItem
+                    key={taskId}
+                    taskName={stateSignal.value[taskId].name}
+                    id={taskId}
+                    children={stateSignal.value[taskId].children}
+                    functions={functions}
+                    stateSignal={stateSignal}
+                  />
               )
             : <p>Loading...</p>
         }
@@ -40,12 +42,10 @@ export default function TodoListWidget() {
   )
 }
 
-export function TodoItem(props: any) {
+export function TodoItem({ taskName, id, functions, stateSignal }: any) {
 
-  const { taskName, id } = props
   if (!taskName || !id) return
 
-  const { data } = useContext(GraphContext) as any
   const taskActionsRef = useRef<HTMLDivElement>(null)
   const taskRef = useRef<HTMLDivElement>(null)
   const openChildrenButtonRef = useRef<HTMLButtonElement>(null)
@@ -62,7 +62,7 @@ export function TodoItem(props: any) {
         <div onClick={expandChildren} className="cursor-pointer mt-1">
           <ChevronDownIcon className="w-3 h-3 mr-2" />
         </div>
-        <input type="checkbox" checked={data[id].completed} name="taskCheckbox"
+        <input type="checkbox" checked={stateSignal.value[id].completed} name="taskCheckbox"
           className="mr-3 w-4 h-4 mt-1 rounded"
           value={id} onChange={functions.handleTaskChecked} />
         <div className="flex w-full">
@@ -99,7 +99,15 @@ export function TodoItem(props: any) {
           <Disclosure.Panel className="ml-5">
             <GhostInput placeholder="+ Add a new task" action={(e: FocusEvent<HTMLInputElement>) => functions.addChildTask(e, id)} />
             {
-              data[id].children.map((id: any) => <TodoItem key={id} taskName={data[id].name} id={id} children={data[id].children} />)
+              stateSignal.value[id].children.map((id: any) =>
+                <TodoItem
+                  key={id}
+                  taskName={stateSignal.value[id].name}
+                  id={id}
+                  children={stateSignal.value[id].children}
+                  functions={functions}
+                  stateSignal={stateSignal}
+                />)
             }
           </Disclosure.Panel>
         </Disclosure>
@@ -107,3 +115,4 @@ export function TodoItem(props: any) {
     </div>
   )
 }
+

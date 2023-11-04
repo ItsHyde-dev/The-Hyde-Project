@@ -1,29 +1,29 @@
 "use client"
 
-import { GraphContext } from "@/providers/graphProvider";
 import { Chart } from "chart.js/auto"
-import { useContext, useEffect } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import WidgetWrapper from "./WidgetWrapper";
+import { Signal } from "@preact/signals-react";
 
-export default function TodoListGraph() {
+export default function TodoListGraph({ stateSignal }: { stateSignal: Signal<any> }) {
 
-  const { data } = useContext(GraphContext) as any;
+  const chartRef = useRef<HTMLCanvasElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-
-    let ctx = document.getElementById("myChart") as HTMLCanvasElement
 
     let completedTasks = 0;
     let pendingTasks = 0;
 
-    for (let key in data) {
-      if (data[key].completed) {
+    for (let key in stateSignal.value) {
+      if (stateSignal.value[key].completed) {
         completedTasks++;
       } else {
         pendingTasks++;
       }
     }
 
-    let chart = new Chart(ctx, {
+    let chart = new Chart(chartRef.current!, {
       type: 'bar',
       data: {
         labels: ["Done", "Remaining"],
@@ -49,26 +49,31 @@ export default function TodoListGraph() {
               precision: 0
             }
           }
-        }
+        },
+        maintainAspectRatio: false,
+        responsive: true
       }
     });
 
     return () => {
       chart.destroy()
     }
-  }, [data]);
+  }, [stateSignal.value]);
 
-  return <div className="border-[1px] border-slate-700 rounded text-white py-5 px-5">
-    <div className="flex flex-row justify-between">
-      <span className="text-l font-light underline underline-offset-4 decoration-slate-700">
-        Graph
-      </span>
-      <div>...</div>
-    </div>
-    <div className="py-5 px-5 text-xl font-normal">
-      <div>
-        <canvas id="myChart" />
+  useLayoutEffect(() => {
+    let width = parentRef.current?.offsetWidth;
+    let height = parentRef.current?.offsetHeight;
+
+    chartRef.current!.height = height!;
+    chartRef.current!.width = width!;
+
+  }, [])
+
+  return (
+    <WidgetWrapper title="Graph">
+      <div className="flex h-full" ref={parentRef}>
+        <canvas id="myChart" className="h-[300px]" ref={chartRef} />
       </div>
-    </div>
-  </div>
+    </WidgetWrapper>
+  )
 }

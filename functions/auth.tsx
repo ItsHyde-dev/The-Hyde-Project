@@ -1,4 +1,8 @@
-function authenticate({ email, password }: { email: string, password: string }) {
+import API_CONSTANTS from "@/constants/api"
+import { toast } from "react-toastify"
+import { handleStatusCodes } from "./api";
+
+async function authenticate({ email, password }: { email: string, password: string }) {
 
   if (
     !validateEmail(email) ||
@@ -7,16 +11,27 @@ function authenticate({ email, password }: { email: string, password: string }) 
 
   // currently hardcoding
   // call api for authentication
-  if (
-    email.trim() != "heyitshyde@gmail.com" ||
-    password.trim() != "Pass@123"
-  ) return false
 
-  // set the token in the local storage
+  const response = await fetch(API_CONSTANTS.API_BASE_URL + "/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      username: email,
+      password
+    })
+  })
 
-  let token = ""
-  setToken(token)
+  const loginResponse = await response.json();
 
+  try {
+    handleStatusCodes(response.status, loginResponse.message)
+  } catch (error) {
+    return false;
+  }
+
+  setToken(loginResponse?.data?.token)
   return true;
 }
 
@@ -24,7 +39,6 @@ function authenticate({ email, password }: { email: string, password: string }) 
 function setToken(token: string) {
   "use client"
   localStorage.setItem("token", token)
-  localStorage.setItem("isLoggedIn", "true")
 }
 
 function validateEmail(email: string) {
@@ -34,5 +48,4 @@ function validateEmail(email: string) {
 function validatePassword(password: string) {
   return true;
 }
-
 export { authenticate }
