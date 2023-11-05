@@ -32,9 +32,7 @@ export default function HomepageWidgets() {
         {AddWidgetButton(setIsOpen)}
       </div>
       {AddWidgetsPanel(isOpen, setIsOpen)}
-      <div className="grid grid-cols-5 grid-rows-8 gap-x-2 gap-y-2 h-screen">
-        {memoizedWidgetTree}
-      </div>
+      {memoizedWidgetTree}
     </div>
   );
 }

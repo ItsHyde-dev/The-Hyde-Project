@@ -1,11 +1,12 @@
 import { Menu } from "@headlessui/react";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { Bars3BottomLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function WidgetWrapper({ children, title }: any) {
   return (
     <div className="border-[1px] border-slate-700 rounded text-white py-5 px-5 flex flex-col h-full overflow-hidden">
       <div className="flex flex-row justify-between">
-        <span className="text-l font-light underline underline-offset-4 decoration-slate-700">
+        <span className="text-l font-light underline underline-offset-4 decoration-slate-700 flex flex-row items-center">
+          <Bars3BottomLeftIcon className="h-5 w-5 mr-2 draggableHandleForGrid cursor-move" />
           {title}
         </span>
         <div className="relative">

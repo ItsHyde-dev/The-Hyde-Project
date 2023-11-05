@@ -6,6 +6,8 @@ import TodoListWidget from "./TodoListWidget";
 import TodoListGraph from "./TodoListGraph";
 import ClockWidget from "./ClockWidget";
 import React from "react";
+import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
+import ResponsiveWidgetGrid from "./ResponsiveWidgetGrid";
 
 export default class Widget {
 
@@ -116,26 +118,16 @@ export default class Widget {
           gridRow: `span ${widget.height}`,
           gridColumn: `span ${widget.width}`,
         };
-        widgetTree.push({
-          widget: (
-            <div style={styling} key={widget.id}>
-              <WidgetComponent stateSignal={stateSignal} key={widget.id} />
-            </div>
-          ),
-          position: widget.position
-        })
+
+        widgetTree.push(
+          <div style={styling} key={widget.id}>
+            <WidgetComponent stateSignal={stateSignal} key={widget.id} />
+          </div>
+        )
       })
     })
 
-    widgetTree.sort((a, b) => {
-      return a.position - b.position
-    })
-
-    widgetTree = widgetTree.map((object: any) => {
-      return object.widget
-    })
-
-    return widgetTree;
+    return <ResponsiveWidgetGrid widgetTree={widgetTree} />;
   }
 
 }
