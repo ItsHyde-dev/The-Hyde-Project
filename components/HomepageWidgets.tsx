@@ -28,8 +28,8 @@ export default function HomepageWidgets() {
     <div className="flex flex-col p-10">
 
       <div className="flex flex-row items-center">
-        <div className="text-2xl font-semibold py-5 pr-5">Hello User</div>
-        {AddWidgetButton(setIsOpen)}
+        <div className="text-xl font-semibold py-5 pr-5">Hello User</div>
+        <AddWidgetButton setIsOpen={setIsOpen} />
       </div>
       {AddWidgetsPanel(isOpen, setIsOpen)}
       {memoizedWidgetTree}

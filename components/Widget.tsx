@@ -6,7 +6,6 @@ import TodoListWidget from "./TodoListWidget";
 import TodoListGraph from "./TodoListGraph";
 import ClockWidget from "./ClockWidget";
 import React from "react";
-import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import ResponsiveWidgetGrid from "./ResponsiveWidgetGrid";
 
 export default class Widget {
@@ -105,7 +104,9 @@ export default class Widget {
     if (!this.type) return
   }
 
-  static buildWidgetTree(widgetGroups: { [key: string]: any }): ReactNode {
+  static buildWidgetTree(data: { [key: string]: any }): ReactNode {
+
+    let widgetGroups = data['widgetGroups'];
 
     let widgetTree: any[] = [];
     console.log("-------------BUILD WIDGET TREE---------------------")
@@ -121,13 +122,13 @@ export default class Widget {
 
         widgetTree.push(
           <div style={styling} key={widget.id}>
-            <WidgetComponent stateSignal={stateSignal} key={widget.id} />
+            <WidgetComponent stateSignal={stateSignal} widgetId={widget.id} key={widget.id} widgetData={widget.data} />
           </div>
         )
       })
     })
 
-    return <ResponsiveWidgetGrid widgetTree={widgetTree} />;
+    return <ResponsiveWidgetGrid widgetTree={widgetTree} gridLayout={data['layouts']} />;
   }
 
 }

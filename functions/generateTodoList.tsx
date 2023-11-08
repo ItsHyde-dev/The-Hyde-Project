@@ -1,4 +1,3 @@
-import { TodoItem } from "@/components/TodoListWidget";
 import getTasksAndSubtasks from "./tasks";
 import { TaskList } from "@/types/customGraphTypes";
 

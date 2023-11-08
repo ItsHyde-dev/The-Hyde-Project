@@ -2,24 +2,25 @@ import { TaskList } from "@/types/customGraphTypes";
 import { FocusEvent } from "react";
 import { checkElement, uncheckElement } from "./graphFunctions";
 import { Signal } from "@preact/signals-react";
+import { authorizedApiCall } from "./api";
+import API_CONSTANTS from "@/constants/api";
 
 export default class TodoListFunctions {
 
-  // graph: any;
-  // setGraph: any;
   stateSignal: Signal
+  widgetId: String
 
-  constructor(stateSignal: Signal<any>) {
-    // this.graph = data;
-    // this.setGraph = setData;
+  constructor(stateSignal: Signal<any>, widgetId: String) {
     this.stateSignal = stateSignal
+    this.widgetId = widgetId
   }
 
   addTask = (e: FocusEvent<HTMLInputElement>) => {
     const taskName = e.target.value
+    if (!taskName) return;
+
     e.target.value = ""
 
-    // hit api to create task
 
     this.stateSignal.value = {
       ...this.stateSignal.value,
@@ -31,23 +32,17 @@ export default class TodoListFunctions {
       }
     }
 
-    // this.setGraph({
-    // ...this.graph,
-    // [taskName]: {
-    // name: taskName,
-    // completed: false,
-    // parent: null,
-    // children: []
-    // }
-    // })
-
+    // hit api to create task
+    authorizedApiCall(API_CONSTANTS.API_BASE_URL + "/widgets/update", "POST", {}, {
+      widgetId: this.widgetId,
+      data: JSON.stringify(this.stateSignal.value)
+    })
   }
 
   addChildTask = (e: FocusEvent<HTMLInputElement>, parentId: string) => {
     const taskName = e.target.value
+    if (!taskName) return;
     e.target.value = ""
-
-    // hit api to create task
 
     this.stateSignal.value = {
       ...this.stateSignal.value,
@@ -62,9 +57,15 @@ export default class TodoListFunctions {
         children: [...this.stateSignal.value[parentId].children, taskName]
       }
     }
+
+    authorizedApiCall(API_CONSTANTS.API_BASE_URL + "/widgets/update", "POST", {}, {
+      widgetId: this.widgetId,
+      data: JSON.stringify(this.stateSignal.value)
+    })
   }
 
   deleteTask = (taskId: string) => {
+
     let acc = this.stateSignal.value[taskId].children
     let graph = { ...this.stateSignal.value }
 
@@ -79,11 +80,14 @@ export default class TodoListFunctions {
       delete graph[child];
     }
 
-    console.log("graph: ", graph)
-
     this.stateSignal.value = {
       ...graph
     }
+
+    authorizedApiCall(API_CONSTANTS.API_BASE_URL + "/widgets/update", "POST", {}, {
+      widgetId: this.widgetId,
+      data: JSON.stringify(this.stateSignal.value)
+    })
   }
 
   getRootTasks(taskList: TaskList) {
@@ -98,6 +102,11 @@ export default class TodoListFunctions {
       ...graph,
       [e.target.value]: updatedField
     }
+
+    authorizedApiCall(API_CONSTANTS.API_BASE_URL + "/widgets/update", "POST", {}, {
+      widgetId: this.widgetId,
+      data: JSON.stringify(this.stateSignal.value)
+    })
   }
 }
 

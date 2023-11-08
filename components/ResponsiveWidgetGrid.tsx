@@ -1,11 +1,13 @@
 'use client'
 
+import api_constants from '../constants/api'
+import { authorizedApiCall } from "@/functions/api"
 import { useMemo, useState } from "react"
 import { Responsive, WidthProvider } from "react-grid-layout"
 
 export default function ResponsiveWidgetGrid({ widgetTree, gridLayout }: any) {
 
-  gridLayout = gridLayout || {}
+  gridLayout = JSON.parse(gridLayout) || {}
 
   const [state, setState] = useState<any>(gridLayout)
   const ResponsiveGridLayout = useMemo(() => WidthProvider(Responsive), []);
@@ -21,7 +23,13 @@ export default function ResponsiveWidgetGrid({ widgetTree, gridLayout }: any) {
       if (JSON.stringify(state) == JSON.stringify(allLayouts))
         return;
 
-      // api call to update the layouts in the db
+      authorizedApiCall(
+        api_constants.API_BASE_URL + "/widgets/updateLayout",
+        "POST",
+        {},
+        { layouts: JSON.stringify(allLayouts) }
+      )
+
       setState(allLayouts);
     }}
   >

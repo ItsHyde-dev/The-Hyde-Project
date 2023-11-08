@@ -1,26 +1,24 @@
-import GenerateTodoList from "@/functions/generateTodoList"
-import { Disclosure } from "@headlessui/react"
+import { Disclosure, Transition } from "@headlessui/react"
 import { ChevronDownIcon, TrashIcon } from "@heroicons/react/24/outline"
-import { useEffect, useRef, FocusEvent, ReactNode } from "react"
+import { useEffect, useRef, FocusEvent, ReactNode, useState } from "react"
 import WidgetWrapper from "./WidgetWrapper"
 import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
 import { Signal } from "@preact/signals-react"
 
-export default function TodoListWidget({ stateSignal }: { stateSignal: Signal<any> }): ReactNode {
+export default function TodoListWidget({ stateSignal, widgetId, widgetData }: { stateSignal: Signal<any>, widgetId: string, widgetData: String }): ReactNode {
 
   useEffect(() => {
-    GenerateTodoList().then((res: any) => {
-      stateSignal.value = res
-    })
+    if (widgetData) stateSignal.value = JSON.parse(widgetData.toString());
   }, [])
 
-  const functions = new TodoListFunctions(stateSignal)
+
+  const functions = new TodoListFunctions(stateSignal, widgetId)
 
   return (
     <WidgetWrapper title="Todo List">
-      <GhostInput placeholder="+ Add a new task" action={functions.addTask} />
       <div className="overflow-scroll">
+        <GhostInput placeholder="+ Add a new task" action={functions.addTask} makeSticky={true} />
         {
           stateSignal.value && Object.keys(stateSignal.value).length > 0 ?
             functions.getRootTasks(stateSignal.value)
@@ -46,7 +44,7 @@ export function TodoItem({ taskName, id, functions, stateSignal }: any) {
 
   if (!taskName || !id) return
 
-  const taskActionsRef = useRef<HTMLDivElement>(null)
+  const [isShowing, setIsShowing] = useState(false)
   const taskRef = useRef<HTMLDivElement>(null)
   const openChildrenButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -69,28 +67,35 @@ export function TodoItem({ taskName, id, functions, stateSignal }: any) {
           <div contentEditable="true"
             ref={taskRef}
             suppressContentEditableWarning={true}
-            onFocus={() => { taskActionsRef?.current?.classList.remove("hidden") }}
+            onFocus={() => {
+              setIsShowing(true)
+            }}
             onBlur={() => {
               if (!isHoveringTaskActions)
-                taskActionsRef?.current?.classList.add("hidden")
+                setIsShowing(false)
             }}
             className="w-full text-white bg-transparent decoration-slate-500  underline-offset-4 focus:outline-none focus:underline active:outline:none active:underline overflow-none break-words pr-8">
             {taskName}
           </div>
-          <div ref={taskActionsRef}
+          <Transition
+            show={isShowing}
+            enter="transition-all duration-175"
+            enterFrom="opacity-0 scale-0"
+            enterTo="opacity-100 scale-100"
+            leave="transition-all duration-150"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-0"
+            className="absolute top-[-110%] left-0 bg-red-600 rounded p-2 z-50"
             onMouseEnter={() => { isHoveringTaskActions = true }}
-            onMouseLeave={() => {
-              isHoveringTaskActions = false
-              if (!taskRef.current?.contains(document.activeElement)) {
-                taskActionsRef?.current?.classList.add("hidden")
-              }
-            }}
-            className="absolute top-[-110%] left-0 hidden bg-red-600 rounded p-2">
+            onMouseLeave={() => { isHoveringTaskActions = false }}
+          >
             <button className="flex flex-row" onClick={() => functions.deleteTask(id)}>
               <TrashIcon className="w-5 h-5" />
               Delete
             </button>
-          </div>
+          </Transition>
+
+
         </div>
       </div>
       {
