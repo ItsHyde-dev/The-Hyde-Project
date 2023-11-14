@@ -5,6 +5,7 @@ import WidgetWrapper from "./WidgetWrapper"
 import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
 import { Signal } from "@preact/signals-react"
+import Spinner from "./Spinner"
 
 export default function TodoListWidget({ stateSignal, widgetId, widgetData, rerender }: { stateSignal: Signal<any>, widgetId: string, widgetData: String, rerender: Signal<boolean> }): ReactNode {
 
@@ -35,7 +36,7 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
                     stateSignal={stateSignal}
                   />
               )
-            : <p>Loading...</p>
+            : <p>No tasks yet</p>
         }
       </div>
     </WidgetWrapper>

@@ -14,12 +14,15 @@ export async function getWidgetTypes() {
   return response.data.widgets
 }
 
-export async function createWidget(widgetId: String, data: String) {
+export async function createWidget(widgetId: String, linkWidgetId: String | null,  data: String) {
+
+  if (!widgetId) return;
+
   const response = await authorizedApiCall(
     api_constants.API_BASE_URL + "/widgets/createWidget",
     "POST",
     {},
-    { widgetId, data });
+    { widgetId, linkWidgetId, data });
 
   return response.data;
 }

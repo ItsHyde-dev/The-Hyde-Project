@@ -38,8 +38,7 @@ export function AddWidgetsPanel(props: any) {
   const [enableLinkWidgets, setEnableLinkWidgets] = useState(false);
   const [linkableWidgetSelected, setLinkableWidgetSelected] = useState(false);
   const [selectedWidget, setSelectedWidget] = useState("");
-
-  let linkWidget = "";
+  const [linkWidget, setLinkWidget] = useState<String | null>(null);
 
   const modalContent = () => {
     return (
@@ -78,12 +77,12 @@ export function AddWidgetsPanel(props: any) {
             <select
               className="bg-transparent outline-none"
               onChange={(e) => {
-                linkWidget = data[e.target.value].id;
+                setLinkWidget(e.target.value);
               }}
             >
               {userWidgets.map((widget: any, index: number) => {
                 return (
-                  <option key={widget.id} value={index}>
+                  <option key={widget.id} value={widget.id}>
                     {widget["widget"].name}
                   </option>
                 );
@@ -114,14 +113,13 @@ export function AddWidgetsPanel(props: any) {
 
   const addWidget = async () => {
     if (!data || isLoading) return;
-    if (!selectedWidget) setSelectedWidget(data[0].id);
+    const currentSelectedWidget = (!selectedWidget)? data[0].id : selectedWidget;
+    let currentSelectedLinkWidget = null;
+    if (enableLinkWidgets && !linkWidget)
+      currentSelectedLinkWidget = userWidgets[0].id;
 
-    await createWidget(selectedWidget, "");
-
-    // logic to add the widget to the root widget tree
+    await createWidget(currentSelectedWidget, currentSelectedLinkWidget, "");
     refetchWidgets();
-    // also remove it if the response from the api is not 200
-
     setIsOpen(false);
   };
 
