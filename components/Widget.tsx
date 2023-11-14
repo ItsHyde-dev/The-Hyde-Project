@@ -7,12 +7,12 @@ import TodoListGraph from "./TodoListGraph";
 import ClockWidget from "./ClockWidget";
 import React from "react";
 import ResponsiveWidgetGrid from "./ResponsiveWidgetGrid";
+import { randomUUID } from "crypto";
 
 export default class Widget {
 
   private id?: String;
   private type?: String;
-  private data?: String;
   private position?: number;
 
   private typeClassification: { [key: string]: string } = {
@@ -27,17 +27,12 @@ export default class Widget {
     'clock': ClockWidget
   }
 
-  constructor(id?: String, data?: String) {
+  constructor(id?: String) {
     this.id = id;
-    this.data = data;
   }
 
   setId(id: String) {
     this.id = id;
-  }
-
-  setData(data: String) {
-    this.data = data;
   }
 
   setPosition(position: number) {
@@ -47,17 +42,6 @@ export default class Widget {
   incrementPosition(increment: number) {
     if (this.position)
       this.position += increment;
-  }
-
-  fetchOwnData() {
-    if (!this.id ||
-      !this.type ||
-      this.typeClassification[this.type.toString()] == 'visualization') return;
-
-
-    // logic to fetch the widget data from the server
-
-
   }
 
   private validateData(data: any) {
@@ -122,7 +106,7 @@ export default class Widget {
 
         widgetTree.push(
           <div style={styling} key={widget.id}>
-            <WidgetComponent stateSignal={stateSignal} widgetId={widget.id} key={widget.id} widgetData={widget.data} />
+            <WidgetComponent stateSignal={stateSignal} widgetId={widget.id} key={widget.id} widgetData={widget.data} rerender={signal(true)} />
           </div>
         )
       })

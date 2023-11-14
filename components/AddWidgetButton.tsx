@@ -1,9 +1,14 @@
 "use client"
 
-export function AddWidgetButton({setIsOpen}: any) {
+export function AddWidgetButton({ setIsOpen }: any) {
+
   return (
     <div
-      className="bg-blue-500 hover:bg-blue-700
+      className="
+        transition-colors
+        duration-150
+        bg-blue-500
+        hover:bg-blue-700
         text-white
         text-sm
         font-normal
@@ -16,4 +21,5 @@ export function AddWidgetButton({setIsOpen}: any) {
     </div>
   );
 }
+
 

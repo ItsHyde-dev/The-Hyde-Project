@@ -6,17 +6,19 @@ import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
 import { Signal } from "@preact/signals-react"
 
-export default function TodoListWidget({ stateSignal, widgetId, widgetData }: { stateSignal: Signal<any>, widgetId: string, widgetData: String }): ReactNode {
+export default function TodoListWidget({ stateSignal, widgetId, widgetData, rerender }: { stateSignal: Signal<any>, widgetId: string, widgetData: String, rerender: Signal<boolean> }): ReactNode {
 
   useEffect(() => {
+    if (!rerender.value) return
     if (widgetData) stateSignal.value = JSON.parse(widgetData.toString());
-  }, [])
+    rerender.value = false
+  }, [rerender.value])
 
 
   const functions = new TodoListFunctions(stateSignal, widgetId)
 
   return (
-    <WidgetWrapper title="Todo List">
+    <WidgetWrapper title="Todo List" widgetId={widgetId}>
       <div className="overflow-scroll">
         <GhostInput placeholder="+ Add a new task" action={functions.addTask} makeSticky={true} />
         {

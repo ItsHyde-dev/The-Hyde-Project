@@ -9,11 +9,12 @@ import { AddWidgetButton } from "./AddWidgetButton";
 import Widget from "./Widget";
 
 export default function HomepageWidgets() {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isRefetching, refetch } = useQuery({
     queryKey: ["widgets"],
     queryFn: getUserWidgets,
     retry: false,
   });
+  let [isOpen, setIsOpen] = useState(false);
 
   let memoizedWidgetTree = useMemo(() => {
     return ApiResponseHandlerWidget(isLoading, isError,
@@ -22,7 +23,25 @@ export default function HomepageWidgets() {
       }
     )
   }, [data])
-  let [isOpen, setIsOpen] = useState(false);
+
+  let getFlattenedWidgets = () => {
+    let userWidgets: any[] = []
+    if (data && !isLoading) {
+      Object.values(data.widgetGroups).forEach((widgetGroup: any) => {
+        widgetGroup.forEach((widget: any) => {
+          if (widget["widget"].type !== "VISUALIZATION") {
+            userWidgets.push(widget)
+          }
+        })
+      })
+    }
+
+    return userWidgets
+  }
+
+  const refetchWidgets = () => {
+    refetch()
+  }
 
   return (
     <div className="flex flex-col p-10">
@@ -31,7 +50,10 @@ export default function HomepageWidgets() {
         <div className="text-xl font-semibold py-5 pr-5">Hello User</div>
         <AddWidgetButton setIsOpen={setIsOpen} />
       </div>
-      {AddWidgetsPanel(isOpen, setIsOpen)}
+      {
+        isOpen &&
+        <AddWidgetsPanel setIsOpen={setIsOpen} userWidgets={getFlattenedWidgets()} refetchWidgets={refetchWidgets} />
+      }
       {memoizedWidgetTree}
     </div>
   );
