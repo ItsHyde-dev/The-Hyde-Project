@@ -13,7 +13,12 @@ export function uncheckElement(graph: TaskList, id: string): TaskList {
   }
 
   if (!parent) return graph
-  graph[parent].completed = false
+
+  while (!!parent) {
+    if (!graph[parent].completed) break
+    graph[parent].completed = false
+    parent = graph[parent].parent
+  }
 
   return graph;
 }
@@ -32,8 +37,14 @@ export function checkElement(graph: TaskList, id: string): TaskList {
 
   if (!parent) return graph
 
-  let checkParent: boolean = graph[parent].children.every(child => graph[child].completed);
-  graph[parent].completed = checkParent
+  // iterate through the parents
+  while (!!parent) {
+    let checkParent: boolean = graph[parent!].children.every(child => graph[child].completed);
+    graph[parent].completed = checkParent
+
+    if (!checkParent) break;
+    parent = graph[parent].parent
+  }
 
   return graph;
 }

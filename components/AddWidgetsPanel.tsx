@@ -13,15 +13,13 @@ export function Toggle(props: any) {
     <Switch
       checked={enabled}
       onChange={setEnabled}
-      className={`${
-        enabled ? "bg-blue-600" : "bg-gray-600"
-      } relative inline-flex h-6 w-11 items-center rounded-full`}
+      className={`${enabled ? "bg-blue-600" : "bg-gray-600"
+        } relative inline-flex h-6 w-11 items-center rounded-full`}
     >
       <span className="sr-only">Enable Link</span>
       <span
-        className={`${
-          enabled ? "translate-x-6" : "translate-x-1"
-        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+        className={`${enabled ? "translate-x-6" : "translate-x-1"
+          } inline-block h-4 w-4 transform rounded-full bg-white transition`}
       />
     </Switch>
   );
@@ -40,6 +38,8 @@ export function AddWidgetsPanel(props: any) {
   const [selectedWidget, setSelectedWidget] = useState("");
   const [linkWidget, setLinkWidget] = useState<String | null>(null);
 
+  const [newWidgetName, setNewWidgetName] = useState<String>("");
+
   const modalContent = () => {
     return (
       <div className="grid grid-cols-2 gap-4 w-fit mt-5 align-center items-center">
@@ -50,6 +50,8 @@ export function AddWidgetsPanel(props: any) {
             setSelectedWidget(data[e.target.value].id);
             if (data[e.target.value].type === "VISUALIZATION") {
               setLinkableWidgetSelected(true);
+            } else {
+              setLinkableWidgetSelected(false);
             }
           }}
         >
@@ -61,6 +63,9 @@ export function AddWidgetsPanel(props: any) {
             );
           })}
         </select>
+
+        <div>Name for Widget: </div>
+        <input required className="bg-transparent outline-none border-b-[0.7px] border-white" onChange={(e) => { setNewWidgetName(e.target.value) }} />
 
         {linkableWidgetSelected && (
           <>
@@ -83,7 +88,7 @@ export function AddWidgetsPanel(props: any) {
               {userWidgets.map((widget: any, index: number) => {
                 return (
                   <option key={widget.id} value={widget.id}>
-                    {widget["widget"].name}
+                    {widget.name}
                   </option>
                 );
               })}
@@ -113,12 +118,12 @@ export function AddWidgetsPanel(props: any) {
 
   const addWidget = async () => {
     if (!data || isLoading) return;
-    const currentSelectedWidget = (!selectedWidget)? data[0].id : selectedWidget;
+    const currentSelectedWidget = (!selectedWidget) ? data[0].id : selectedWidget;
     let currentSelectedLinkWidget = null;
     if (enableLinkWidgets && !linkWidget)
       currentSelectedLinkWidget = userWidgets[0].id;
 
-    await createWidget(currentSelectedWidget, currentSelectedLinkWidget, "");
+    await createWidget({ widgetId: currentSelectedWidget, linkWidgetId: currentSelectedLinkWidget, data: "", name: newWidgetName });
     refetchWidgets();
     setIsOpen(false);
   };

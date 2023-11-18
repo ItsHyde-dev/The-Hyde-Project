@@ -5,9 +5,8 @@ import WidgetWrapper from "./WidgetWrapper"
 import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
 import { Signal } from "@preact/signals-react"
-import Spinner from "./Spinner"
 
-export default function TodoListWidget({ stateSignal, widgetId, widgetData, rerender }: { stateSignal: Signal<any>, widgetId: string, widgetData: String, rerender: Signal<boolean> }): ReactNode {
+export default function TodoListWidget({ stateSignal, widgetId, widgetData, rerender, widgetName }: { stateSignal: Signal<any>, widgetId: string, widgetData: String, rerender: Signal<boolean>, widgetName: String }): ReactNode {
 
   useEffect(() => {
     if (!rerender.value) return
@@ -19,7 +18,7 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
   const functions = new TodoListFunctions(stateSignal, widgetId)
 
   return (
-    <WidgetWrapper title="Todo List" widgetId={widgetId}>
+    <WidgetWrapper title={widgetName} widgetId={widgetId}>
       <div className="overflow-scroll">
         <GhostInput placeholder="+ Add a new task" action={functions.addTask} makeSticky={true} />
         {

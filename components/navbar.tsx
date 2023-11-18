@@ -6,9 +6,9 @@ import logo from "../public/Hyde Project Logo.png";
 
 const navigation = [
   { name: 'Home', href: '/home', current: true },
-  { name: 'Contact', href: '/contact', current: false },
-  { name: 'About', href: '/about', current: false },
-  { name: 'Services', href: '#', current: false },
+  // { name: 'Contact', href: '/contact', current: false },
+  { name: 'Support', href: '/support', current: false },
+  // { name: 'Services', href: '#', current: false },
 ]
 
 function classNames(...classes: any) {
@@ -44,7 +44,7 @@ export default function NavBar(props: { currentFocus: string }) {
                   <img
                     className="h-8 w-auto"
                     src={logo.src}
-                    alt="Your Company"
+                    alt="The Hyde Project"
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">

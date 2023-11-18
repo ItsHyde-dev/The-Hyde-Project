@@ -14,7 +14,7 @@ export async function getWidgetTypes() {
   return response.data.widgets
 }
 
-export async function createWidget(widgetId: String, linkWidgetId: String | null,  data: String) {
+export async function createWidget({ widgetId, linkWidgetId, data, name }: { widgetId: String, linkWidgetId: String | null, data: any, name: String }) {
 
   if (!widgetId) return;
 
@@ -22,7 +22,7 @@ export async function createWidget(widgetId: String, linkWidgetId: String | null
     api_constants.API_BASE_URL + "/widgets/createWidget",
     "POST",
     {},
-    { widgetId, linkWidgetId, data });
+    { widgetId, linkWidgetId, data, name });
 
   return response.data;
 }

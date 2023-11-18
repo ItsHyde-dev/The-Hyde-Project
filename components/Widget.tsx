@@ -7,7 +7,6 @@ import TodoListGraph from "./TodoListGraph";
 import ClockWidget from "./ClockWidget";
 import React from "react";
 import ResponsiveWidgetGrid from "./ResponsiveWidgetGrid";
-import { randomUUID } from "crypto";
 
 export default class Widget {
 
@@ -106,7 +105,7 @@ export default class Widget {
 
         widgetTree.push(
           <div style={styling} key={widget.id}>
-            <WidgetComponent stateSignal={stateSignal} widgetId={widget.id} key={widget.id} widgetData={widget.data} rerender={signal(true)} />
+            <WidgetComponent stateSignal={stateSignal} widgetId={widget.id} key={widget.id} widgetName={widget.name} widgetData={widget.data} rerender={signal(true)} />
           </div>
         )
       })
