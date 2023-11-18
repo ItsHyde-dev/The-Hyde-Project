@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef } from "react"
 import WidgetWrapper from "./WidgetWrapper";
 import { Signal } from "@preact/signals-react";
 
-export default function TodoListGraph({ stateSignal, widgetId }: { stateSignal: Signal<any>, widgetId: any }) {
+export default function TodoListGraph({ stateSignal, widgetId, widgetName }: { stateSignal: Signal<any>, widgetId: any, widgetName: String }) {
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export default function TodoListGraph({ stateSignal, widgetId }: { stateSignal: 
   }, [])
 
   return (
-    <WidgetWrapper title="Graph" widgetId={widgetId}>
+    <WidgetWrapper title={widgetName} widgetId={widgetId}>
       <div className="flex h-full" ref={parentRef}>
         <canvas id="myChart" className="h-[300px]" ref={chartRef} />
       </div>

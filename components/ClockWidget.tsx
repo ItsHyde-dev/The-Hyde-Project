@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import WidgetWrapper from "./WidgetWrapper";
 
-export default function ClockWidget({ widgetId }: any) {
+export default function ClockWidget({ widgetId, widgetName }: any) {
   const [time, setTime] = useState("");
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function ClockWidget({ widgetId }: any) {
   }, []);
 
   return (
-    <WidgetWrapper title="Clock" widgetId={widgetId}>
+    <WidgetWrapper title={widgetName} widgetId={widgetId}>
       <div className="text-2xl font-semibold py-5">{time}</div>
     </WidgetWrapper>
   );

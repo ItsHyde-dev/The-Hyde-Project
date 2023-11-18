@@ -8,7 +8,12 @@ export async function getWidgetData(widgetId: any) {
   return response.data;
 }
 
-export async function deleteWidgetFromDatabase(widgetId: any) {
+export async function deleteWidget(widgetId: any) {
   const response = await authorizedApiCall(api_constants.API_BASE_URL + "/widgets/delete", "post", {}, { widgetId });
+  return response.data;
+}
+
+export async function renameWidget(widgetId: any, widgetName: String) {
+  const response = await authorizedApiCall(api_constants.API_BASE_URL + "/widgets/rename", "post", {}, { widgetId, widgetName });
   return response.data;
 }
