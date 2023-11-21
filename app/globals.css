@@ -74,3 +74,8 @@ body {
 /* background-attachment: fixed; */
 /* background-repeat: no-repeat; */
 /* } */
+
+html {
+  background-color: #1f2937;
+  background-image: none;
+}
