@@ -1,10 +1,11 @@
 "use client"
-import { addCategory, addNote, getCategories, getNotes } from "@/functions/categorizedList";
+import CategorizedListFunctions from "@/functions/categorizedList";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import WidgetWrapper from "./WidgetWrapper";
 import { Disclosure } from "@headlessui/react";
 import GhostInput from "./GhostInput";
+import { signal } from "@preact/signals-react";
 
 export default function CategorizedListWidget() {
 
@@ -12,16 +13,19 @@ export default function CategorizedListWidget() {
   // create delete and edit the notes in the categories
 
   const [categories, setCategories] = useState<any[]>([]);
+  const stateSignal = signal({});
+
+  const functions = new CategorizedListFunctions(stateSignal);
 
   useEffect(() => {
-    getCategories().then((data) => {
+    functions.getCategories().then((data) => {
       setCategories(data);
     })
   }, [])
 
   return (
     <WidgetWrapper title="Categorized List">
-      <GhostInput placeholder="+ Add a new category" action={addCategory} />
+      <GhostInput placeholder="+ Add a new category" action={functions.addCategory} />
       {
         categories.map((category: any) => {
           return <Category key={category.id} name={category.name} id={category.id} />
@@ -60,15 +64,16 @@ export function NotesList(props: any) {
   let { id } = props;
 
   const [notes, setNotes] = useState<any[]>([]);
+  const functions = props.functions;
 
   useEffect(() => {
-    getNotes(id).then((data) => {
+    functions.getNotes(id).then((data: any) => {
       setNotes(data);
     })
   }, [])
   return (
     <div>
-      <GhostInput placeholder="+ Add a new note" action={addNote} />
+      <GhostInput placeholder="+ Add a new note" action={functions.addNote} />
       {
         notes.map((note: any) => {
           return <Note key={note.id} name={note.name} id={note.id} />
