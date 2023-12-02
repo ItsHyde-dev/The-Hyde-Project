@@ -1,5 +1,7 @@
-"use client"
-import CategorizedListFunctions from "@/functions/categorizedList";
+"use client";
+import CategorizedListFunctions, {
+  CategorizedListNotesFunctions,
+} from "@/functions/categorizedList";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import WidgetWrapper from "./WidgetWrapper";
@@ -8,10 +10,6 @@ import GhostInput from "./GhostInput";
 import { signal } from "@preact/signals-react";
 
 export default function CategorizedListWidget() {
-
-  // create, delete and edit categories
-  // create delete and edit the notes in the categories
-
   const [categories, setCategories] = useState<any[]>([]);
   const stateSignal = signal({});
 
@@ -20,19 +18,22 @@ export default function CategorizedListWidget() {
   useEffect(() => {
     functions.getCategories().then((data) => {
       setCategories(data);
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <WidgetWrapper title="Categorized List">
-      <GhostInput placeholder="+ Add a new category" action={functions.addCategory} />
-      {
-        categories.map((category: any) => {
-          return <Category key={category.id} name={category.name} id={category.id} />
-        })
-      }
+      <GhostInput
+        placeholder="+ Add a new category"
+        action={functions.addCategory}
+      />
+      {categories.map((category: any) => {
+        return (
+          <Category key={category.id} name={category.name} id={category.id} />
+        );
+      })}
     </WidgetWrapper>
-  )
+  );
 }
 
 export function Category(props: any) {
@@ -41,13 +42,16 @@ export function Category(props: any) {
   let openNotesRef = useRef<HTMLButtonElement>(null);
 
   const expandChildren = () => {
-    openNotesRef.current?.click()
-  }
+    openNotesRef.current?.click();
+  };
 
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center py-2">
-        <ChevronDownIcon className="h-3 w-3 mr-2 cursor-pointer" onClick={expandChildren} />
+        <ChevronDownIcon
+          className="h-3 w-3 mr-2 cursor-pointer"
+          onClick={expandChildren}
+        />
         {name}
       </div>
       <Disclosure>
@@ -57,37 +61,29 @@ export function Category(props: any) {
         </Disclosure.Panel>
       </Disclosure>
     </div>
-  )
+  );
 }
 
 export function NotesList(props: any) {
   let { id } = props;
-
-  const [notes, setNotes] = useState<any[]>([]);
-  const functions = props.functions;
+  const notes = signal([]);
+  const functions = new CategorizedListNotesFunctions(notes, id);
 
   useEffect(() => {
-    functions.getNotes(id).then((data: any) => {
-      setNotes(data);
-    })
-  }, [])
+    functions.getNotes();
+  }, []);
+
   return (
     <div>
       <GhostInput placeholder="+ Add a new note" action={functions.addNote} />
-      {
-        notes.map((note: any) => {
-          return <Note key={note.id} name={note.name} id={note.id} />
-        })
-      }
+      {notes.value.map((note: any) => {
+        return <Note key={note.id} name={note.name} id={note.id} />;
+      })}
     </div>
-  )
+  );
 }
 
 export function Note(props: any) {
   let { name, id } = props;
-  return (
-    <div className="flex flex-row items-center py-2">
-      {name}
-    </div>
-  )
+  return <div className="flex flex-row items-center py-2">{name}</div>;
 }
