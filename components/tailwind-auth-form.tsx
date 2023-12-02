@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import logo from "../public/Hyde Project Logo.png";
 import { authenticate, signup } from "@/functions/auth";
 import { Tab } from "@headlessui/react";
+import Image from "next/image";
 
 export default function AuthForm() {
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function AuthForm() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          <Image
             className="mx-auto h-20 w-auto"
             src={logo.src}
             alt="TheHydeProject Logo"

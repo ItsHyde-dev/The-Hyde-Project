@@ -21,6 +21,7 @@ export default function Home() {
       setAuthState(true)
       document.title = "Home"
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!authState)

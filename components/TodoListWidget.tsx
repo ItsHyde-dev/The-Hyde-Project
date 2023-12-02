@@ -30,10 +30,14 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
                     key={taskId}
                     taskName={stateSignal.value[taskId].name}
                     id={taskId}
-                    children={stateSignal.value[taskId].children}
                     functions={functions}
                     stateSignal={stateSignal}
-                  />
+                  >
+                    {
+                      ...stateSignal.value[taskId].children
+                    }
+                  </TodoItem>
+
               )
             : <p>No tasks yet</p>
         }
@@ -44,11 +48,12 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
 
 export function TodoItem({ taskName, id, functions, stateSignal }: any) {
 
-  if (!taskName || !id) return
 
   const [isShowing, setIsShowing] = useState(false)
   const taskRef = useRef<HTMLDivElement>(null)
   const openChildrenButtonRef = useRef<HTMLButtonElement>(null)
+
+  if (!taskName || !id) return
 
   const expandChildren = () => {
     openChildrenButtonRef.current?.click()
@@ -111,10 +116,14 @@ export function TodoItem({ taskName, id, functions, stateSignal }: any) {
                   key={id}
                   taskName={stateSignal.value[id].name}
                   id={id}
-                  children={stateSignal.value[id].children}
                   functions={functions}
                   stateSignal={stateSignal}
-                />)
+                >
+                  {
+                    stateSignal.value[id].children
+                  }
+                </TodoItem>
+              )
             }
           </Disclosure.Panel>
         </Disclosure>

@@ -2,6 +2,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, CogIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image';
 import logo from "../public/Hyde Project Logo.png";
 
 const navigation = [
@@ -41,7 +42,7 @@ export default function NavBar(props: { currentFocus: string }) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
+                  <Image
                     className="h-8 w-auto"
                     src={logo.src}
                     alt="The Hyde Project"

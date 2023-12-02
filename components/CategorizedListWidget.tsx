@@ -19,7 +19,7 @@ export default function CategorizedListWidget() {
     functions.getCategories().then((data) => {
       setCategories(data);
     });
-  }, []);
+  }, [categories]);
 
   return (
     <WidgetWrapper title="Categorized List">

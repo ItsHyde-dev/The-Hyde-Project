@@ -22,6 +22,7 @@ export default function HomepageWidgets() {
         return (data && Object.keys(data).length) ? Widget.buildWidgetTree(data) : <p>No widgets found</p>
       }
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   let getFlattenedWidgets = () => {

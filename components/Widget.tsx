@@ -10,7 +10,6 @@ import ResponsiveWidgetGrid from "./ResponsiveWidgetGrid";
 
 export default class Widget {
 
-  private id?: String;
   private type?: String;
   private position?: number;
 
@@ -24,14 +23,6 @@ export default class Widget {
     "todolist": TodoListWidget,
     "todolist-bar-graph": TodoListGraph,
     'clock': ClockWidget
-  }
-
-  constructor(id?: String) {
-    this.id = id;
-  }
-
-  setId(id: String) {
-    this.id = id;
   }
 
   setPosition(position: number) {
