@@ -6,6 +6,8 @@
 
 # ⚓ The Hyde Project
 
+Link: [The Hyde Project](https://the-hyde-project.vercel.app)
+
 ## Overview
 
 The Hyde Project is a personalized dashboard website built with Next.js 13 and Spring Boot Java for the frontend and backend, respectively. It supports user authentication via username and password, and it features a dynamic layout where widgets can be resized and repositioned.
