@@ -44,6 +44,8 @@ export default function NavBar(props: { currentFocus: string }) {
                 <div className="flex flex-shrink-0 items-center">
                   <Image
                     className="h-8 w-auto"
+                    width={32}
+                    height={32}
                     src={logo.src}
                     alt="The Hyde Project"
                   />

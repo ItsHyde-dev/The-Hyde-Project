@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import logo from "../public/Hyde Project Logo.png";
 import { authenticate, signup } from "@/functions/auth";
 import { Tab } from "@headlessui/react";
 import Image from "next/image";
+import Spinner from "./Spinner";
 
 export default function AuthForm() {
   useEffect(() => {
@@ -17,6 +18,8 @@ export default function AuthForm() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             className="mx-auto h-20 w-auto"
+            width={200}
+            height={200}
             src={logo.src}
             alt="TheHydeProject Logo"
           />
@@ -40,6 +43,8 @@ function classNames(...classes: any[]) {
 }
 
 function LoginForm() {
+  const [showRequestLoading, setShowRequestLoading] = useState(false);
+
   const handleLogin = (event: any) => {
     event.preventDefault();
 
@@ -49,70 +54,82 @@ function LoginForm() {
     };
 
     authenticate(loginData).then((res) => {
-      if (!res) return;
+      if (!res) {
+        setShowRequestLoading(false);
+        return;
+      }
       window.location.href = "/home";
     });
+
+    setShowRequestLoading(true);
   };
 
   return (
-    <form className="space-y-6" onSubmit={handleLogin}>
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium leading-6 text-white"
-        >
-          Email address
-        </label>
-        <div className="mt-2">
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
+    <div className="relative">
+      {showRequestLoading ?
+        <div className="flex items-center justify-center absolute w-full h-full bg-black bg-opacity-30 rounded-lg">
+          <Spinner />
         </div>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between">
+        : null}
+      <form className="space-y-6" onSubmit={handleLogin}>
+        <div>
           <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-white "
+            htmlFor="email"
+            className="block text-sm font-medium leading-6 text-white"
           >
-            Password
+            Email address
           </label>
-          <div className="text-sm">
-            <a
-              href="#"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot password?
-            </a>
+          <div className="mt-2">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
           </div>
         </div>
-        <div className="mt-2">
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
 
-      <div>
-        <button
-          type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Sign in
-        </button>
-      </div>
-    </form>
+        <div>
+          <div className="flex items-center justify-between">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium leading-6 text-white "
+            >
+              Password
+            </label>
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot password?
+              </a>
+            </div>
+          </div>
+          <div className="mt-2">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Sign in
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -243,4 +260,4 @@ function TabTitle(props: any) {
   );
 }
 
-function LoginSignupFormSection(props: any) {}
+function LoginSignupFormSection(props: any) { }
