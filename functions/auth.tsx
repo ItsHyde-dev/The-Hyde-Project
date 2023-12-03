@@ -1,5 +1,6 @@
 import API_CONSTANTS from "@/constants/api";
-import { handleStatusCodes } from "./api";
+import { ServerError, handleStatusCodes } from "./api";
+import { toast } from "react-toastify";
 
 async function authenticate({
   email,
@@ -42,35 +43,49 @@ export const signup = async ({
   password: string;
   confirmPassword: string;
 }): Promise<boolean> => {
-  if (
-    !validateEmail(email) ||
-    !validatePassword(password) ||
-    !validatePassword(confirmPassword)
-  )
-    return false;
-  if (password !== confirmPassword) return false;
-
-  const response = await fetch(API_CONSTANTS.API_BASE_URL + "/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: email,
-      password,
-    }),
-  });
-
-  const signupResponse = await response.json();
-
   try {
+    if (
+      !validateEmail(email) ||
+      !validatePassword(password) ||
+      !validatePassword(confirmPassword)
+    )
+      throw new Error("Invalid email or password");
+    if (password !== confirmPassword) {
+      throw new Error("Passwords don't match");
+    }
+    const response = await fetch(API_CONSTANTS.API_BASE_URL + "/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: email,
+        password,
+      }),
+    });
+
+    const signupResponse = await response.json();
+
     handleStatusCodes(response.status, signupResponse.message);
-  } catch (error) {
+
+    setToken(signupResponse?.data?.token);
+    return true;
+  } catch (error: any) {
+    if (error instanceof ServerError) return false;
+
+    toast.error(error.message, {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+
     return false;
   }
-
-  setToken(signupResponse?.data?.token);
-  return true;
 };
 
 function setToken(token: string) {

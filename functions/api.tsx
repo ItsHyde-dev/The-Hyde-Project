@@ -3,19 +3,16 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+export class ServerError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+  name = "ServerError";
+}
+
 export function handleStatusCodes(statusCode: number, message: string) {
   switch (statusCode) {
     case 200: {
-      // toast.success(message, {
-      // position: "bottom-left",
-      // autoClose: 5000,
-      // hideProgressBar: false,
-      // closeOnClick: true,
-      // pauseOnHover: true,
-      // draggable: true,
-      // progress: undefined,
-      // theme: "dark",
-      // });
       break;
     }
     default: {
@@ -30,7 +27,7 @@ export function handleStatusCodes(statusCode: number, message: string) {
         theme: "dark",
       });
 
-      throw new Error(message);
+      throw new ServerError(message);
     }
   }
 }
