@@ -12,8 +12,12 @@ export default function AuthForm() {
     document.title = "Login";
   }, []);
 
+
   return (
     <>
+
+      <Disclaimer />
+
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
@@ -288,4 +292,23 @@ function TabTitle(props: any) {
   );
 }
 
-function LoginSignupFormSection(props: any) { }
+function Disclaimer() {
+  const [showWarningOverlay, setShowWarningOverlay] = useState(true);
+
+  return showWarningOverlay && <div className="absolute top-0 left-0 bg-black bg-opacity-50 w-full h-full flex items-center justify-center">
+    <div className="bg-white p-8 rounded-xl flex flex-col gap-4">
+      <h1 className="text-xl font-bold">Disclaimer</h1>
+      <p className="text-sm">
+        This site is currently in beta testing.
+        <br />
+        Consequently the backend is hosted on a free tier and the first request can take a long time to execute.</p>
+      <button
+        className="bg-blue-500 text-white p-2 rounded-xl w-[50%] mx-auto mt-5"
+        onClick={() => setShowWarningOverlay(false)}
+      >
+        Got it
+      </button>
+    </div>
+  </div>
+}
+
