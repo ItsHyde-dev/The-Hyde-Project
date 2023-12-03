@@ -7,6 +7,7 @@
 # ⚓ The Hyde Project
 
 🔗 Website Link: [The Hyde Project](https://the-hyde-project.vercel.app)
+
 🔗 Backend Repo Link: [The Hyde Project Backend](https://github.com/ItsHyde-dev/the-hyde-project-backend)
 
 ## Overview
