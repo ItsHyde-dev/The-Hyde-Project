@@ -39,7 +39,7 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
                   </TodoItem>
 
               )
-            : <p>No tasks yet</p>
+            : <p className="text-center italic text-gray-500 my-2">No tasks yet</p>
         }
       </div>
     </WidgetWrapper>

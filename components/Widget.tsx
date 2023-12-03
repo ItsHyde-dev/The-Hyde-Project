@@ -102,6 +102,10 @@ export default class Widget {
       })
     })
 
+    if (!widgetTree.length) {
+      return <p className="text-center italic text-gray-500 my-10">Seems like you don't have any widgets. You can add some by clicking the add widget button</p>
+    }
+
     return <ResponsiveWidgetGrid widgetTree={widgetTree} gridLayout={data['layouts']} />;
   }
 

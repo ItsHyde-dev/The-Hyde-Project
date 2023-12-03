@@ -8,7 +8,9 @@ export default function ApiResponseHandlerWidget(isLoading: boolean, isError: an
   }
 
   if (isLoading) {
-    return <Spinner />;
+    return <div className="flex justify-center items-center w-full h-full">
+      <Spinner />
+    </div>
   }
 
   return successWidget()

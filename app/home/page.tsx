@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./homepage.styles.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
 
@@ -25,7 +26,7 @@ export default function Home() {
   }, []);
 
   if (!authState)
-    return <p>Loading ....</p>;
+    return <Spinner />;
 
   return <div className="flex flex-col text-white homeBackground">
     <ToastContainer
