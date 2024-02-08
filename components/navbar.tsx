@@ -6,7 +6,7 @@ import Image from 'next/image';
 import logo from "../public/Hyde Project Logo.png";
 
 const navigation = [
-  { name: 'Home', href: '/home', current: true },
+  { name: 'Dashboard', href: '/dashboard', current: true },
   // { name: 'Contact', href: '/contact', current: false },
   { name: 'Support', href: '/support', current: false },
   // { name: 'Services', href: '#', current: false },

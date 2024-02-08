@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -32,8 +32,12 @@ export function handleStatusCodes(statusCode: number, message: string) {
   }
 }
 
-export async function authorizedApiCall(url: string, method: string, headers: any, body: any) {
-
+export async function authorizedApiCall(
+  url: string,
+  method: string,
+  headers: any,
+  body: any
+) {
   const token = localStorage.getItem("token");
 
   let axiosBody = {
@@ -41,13 +45,13 @@ export async function authorizedApiCall(url: string, method: string, headers: an
     method: method,
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + token,
-      ...headers
+      Authorization: "Bearer " + token,
+      ...headers,
     },
-    data: JSON.stringify(body)
-  }
+    data: JSON.stringify(body),
+  };
 
-  const response = await axios(axiosBody)
+  const response = await axios(axiosBody);
 
   handleStatusCodes(response.status, response.statusText);
   return response.data;

@@ -3,7 +3,7 @@
 import { createWidget, getWidgetTypes } from "@/functions/homepage";
 import { Dialog, Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
-import ApiResponseHandlerWidget from "./ApiResponseHandlerWidget";
+import ApiResponseHandlerWidget from "../ApiResponseHandlerWidget";
 import { useState } from "react";
 
 export function Toggle(props: any) {
@@ -85,7 +85,7 @@ export function AddWidgetsPanel(props: any) {
                 setLinkWidget(e.target.value);
               }}
             >
-              {userWidgets.map((widget: any, index: number) => {
+              {userWidgets.map((widget: any, _: number) => {
                 return (
                   <option key={widget.id} value={widget.id}>
                     {widget.name}

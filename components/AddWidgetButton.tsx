@@ -13,11 +13,12 @@ export function AddWidgetButton({ setIsOpen }: any) {
         text-sm
         font-normal
         py-2 px-4 rounded-full
-        w-[130px] flex justify-center
+        w-[4rem] flex justify-center
+        mx-4
         cursor-pointer"
       onClick={() => setIsOpen(true)}
     >
-      Add Widget
+      Add
     </div>
   );
 }

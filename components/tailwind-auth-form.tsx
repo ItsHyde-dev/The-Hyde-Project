@@ -62,7 +62,7 @@ function LoginForm() {
         setShowRequestLoading(false);
         return;
       }
-      window.location.href = "/home";
+      window.location.href = "/dashboard";
     });
 
     setShowRequestLoading(true);
@@ -161,7 +161,7 @@ const SignupForm = (props: {}) => {
         setShowRequestLoading(false);
         return;
       }
-      window.location.href = "/home";
+      window.location.href = "/dashboard";
     });
 
     setShowRequestLoading(true);

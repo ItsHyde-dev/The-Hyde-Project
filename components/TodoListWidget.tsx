@@ -5,6 +5,7 @@ import WidgetWrapper from "./WidgetWrapper"
 import GhostInput from "./GhostInput"
 import TodoListFunctions from "@/functions/todolist"
 import { Signal } from "@preact/signals-react"
+import '../app/dashboard/style.css'
 
 export default function TodoListWidget({ stateSignal, widgetId, widgetData, rerender, widgetName }: { stateSignal: Signal<any>, widgetId: string, widgetData: String, rerender: Signal<boolean>, widgetName: String }): ReactNode {
 
@@ -19,7 +20,7 @@ export default function TodoListWidget({ stateSignal, widgetId, widgetData, rere
 
   return (
     <WidgetWrapper title={widgetName} widgetId={widgetId}>
-      <div className="overflow-scroll">
+      <div className="no-scrollbar-firefox overflow-scroll">
         <GhostInput placeholder="+ Add a new task" action={functions.addTask} makeSticky={true} />
         {
           stateSignal.value && Object.keys(stateSignal.value).length > 0 ?

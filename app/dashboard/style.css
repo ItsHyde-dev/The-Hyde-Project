@@ -1,0 +1,19 @@
+.no-scrollbar-firefox {
+  scrollbar-width: none;
+}
+
+.widget-area-tag {
+  position: absolute;
+  top: 0;
+  left: 4rem;
+  transform: translateY(-50%);
+  background: #1f2937;
+}
+
+.widget-area-action-right {
+  position: absolute;
+  top: 0;
+  right: 4rem;
+  transform: translateY(-50%);
+  background: #1f2937;
+}

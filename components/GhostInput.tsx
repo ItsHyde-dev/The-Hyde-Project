@@ -1,4 +1,4 @@
-import "../app/home/homepage.styles.css"
+import "../app/dashboard/homepage.styles.css"
 export default function GhostInput(props: any) {
 
   const { placeholder, action, makeSticky } = props

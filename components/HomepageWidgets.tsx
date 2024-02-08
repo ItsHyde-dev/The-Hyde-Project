@@ -4,12 +4,13 @@ import { getUserWidgets } from "@/functions/homepage";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ApiResponseHandlerWidget from "./ApiResponseHandlerWidget";
-import { AddWidgetsPanel } from "./AddWidgetsPanel";
+import { AddWidgetsPanel } from "./addWidgetsPanel/addWidgetsPanel";
 import { AddWidgetButton } from "./AddWidgetButton";
 import Widget from "./Widget";
+import '../app/dashboard/style.css'
 
 export default function HomepageWidgets() {
-  const { data, isLoading, isError, isRefetching, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["widgets"],
     queryFn: getUserWidgets,
     retry: false,
@@ -45,10 +46,13 @@ export default function HomepageWidgets() {
   }
 
   return (
-    <div className="flex flex-col p-10">
+    <div className="flex flex-col p-10 border-[1px] border-gray-700 m-5 relative">
 
-      <div className="flex flex-row items-center">
-        <div className="text-xl font-semibold py-5 pr-5">Hello User</div>
+
+      <div className="widget-area-tag text-lg px-4">
+        Hello User
+      </div>
+      <div className="widget-area-action-right">
         <AddWidgetButton setIsOpen={setIsOpen} />
       </div>
       {
